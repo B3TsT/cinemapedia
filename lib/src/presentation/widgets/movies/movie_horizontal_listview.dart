@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia/src/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/movie.dart';
+import '../widget.dart';
 
 class MovieHorisontalListview extends StatefulWidget {
   const MovieHorisontalListview(
@@ -80,28 +80,37 @@ class _Slide extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 8),
+          const SizedBox(height: 5),
           SizedBox(
             width: 150,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                movie.posterPath,
-                fit: BoxFit.cover,
-                width: 150,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                          child: CircularProgressIndicator(strokeWidth: 2)),
-                    );
-                  }
-                  return GestureDetector(
-                      onTap: () => context.push('/home/0/movie/${movie.id}'),
-                      child: FadeIn(child: child));
-                },
+              child: GestureDetector(
+                onTap: () => context.push('/home/0/movie/${movie.id}'),
+                child: FadeInImage(
+                  height: 220,
+                  placeholder:
+                      const AssetImage('assets/loaders/bottle-loader.gif'),
+                  image: NetworkImage(movie.posterPath),
+                ),
               ),
+              // child: Image.network(
+              //   movie.posterPath,
+              //   fit: BoxFit.cover,
+              //   width: 150,
+              //   loadingBuilder: (context, child, loadingProgress) {
+              //     if (loadingProgress != null) {
+              //       return const Padding(
+              //         padding: EdgeInsets.all(8.0),
+              //         child: Center(
+              //             child: CircularProgressIndicator(strokeWidth: 2)),
+              //       );
+              //     }
+              //     return GestureDetector(
+              //         onTap: () => context.push('/home/0/movie/${movie.id}'),
+              //         child: FadeIn(child: child));
+              //   },
+              // ),
             ),
           ),
           const SizedBox(height: 5),
@@ -113,26 +122,7 @@ class _Slide extends StatelessWidget {
               style: textStyles.titleSmall,
             ),
           ),
-          SizedBox(
-            width: 150,
-            child: Row(
-              children: [
-                Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
-                const SizedBox(width: 3),
-                Text(
-                  '${movie.voteAverage}',
-                  style: textStyles.bodyMedium!
-                      .copyWith(color: Colors.yellow.shade800),
-                ),
-                // const SizedBox(width: 10),
-                const Spacer(),
-                Text(
-                  HumanFormats.number(movie.popularity),
-                  style: textStyles.bodySmall,
-                )
-              ],
-            ),
-          )
+          MovieRating(voteAverage: movie.voteAverage)
         ],
       ),
     );
@@ -149,7 +139,7 @@ class _Title extends StatelessWidget {
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     return Container(
       padding: const EdgeInsets.only(top: 10),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
       child: Row(
         children: [
           if (title != null) Text(title!, style: titleStyle),

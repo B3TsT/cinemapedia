@@ -30,6 +30,7 @@ class CustomBottomNavigation extends StatelessWidget {
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       height: size.height * 0.1,
       backgroundColor: colors.background,
+      shadowColor: Colors.amber,
       selectedIndex: currentIndex,
       onDestinationSelected: (value) => onItemTapped(context, value),
       destinations: const [
@@ -38,7 +39,7 @@ class CustomBottomNavigation extends StatelessWidget {
           label: 'Inicio',
         ),
         NavigationDestination(
-          icon: Icon(Icons.label_outline),
+          icon: Icon(Icons.thumbs_up_down_outlined),
           label: 'Categorias',
         ),
         NavigationDestination(
